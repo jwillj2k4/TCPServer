@@ -1,5 +1,4 @@
 using System.Net;
-using System.Net.Sockets;
 using TCPServer01.Enums.Tcp;
 using TCPServer01.Interfaces.Application.Tcp;
 
@@ -9,18 +8,27 @@ namespace TCPServer01.Services.Application.Tcp
     {
         public string Message { get; private set; }
 
-        public TcpListener TcpListener { get; set; }
-        
-        public TcpServerState State { get; set; }
-        
-        public bool CreateListener(string ipAddress, string port)
+        //tcp server role
+        public ITcpListenerService MTcpListenerService { get; set; }
+
+        public TcpState State { get; set; }
+
+        public long ByteArrLength { get; set; }
+
+        public TcpService(long byteArrLength)
         {
-            var result = false;            
+            MTcpListenerService = new TcpListenerService();
+            ByteArrLength = byteArrLength;
+        }
+
+        public bool CreateListener(string ipAddress, string port, Form1 form1)
+        {
             IPAddress ipaddr;
             int nPort;
+            string tcpClientMessage;
             Message = string.Empty;
 
-            if(!int.TryParse(port, out nPort))
+            if (!int.TryParse(port, out nPort))
                 Message = "invalid port supplied";
 
             if (!IPAddress.TryParse(ipAddress, out ipaddr))
@@ -30,39 +38,16 @@ namespace TCPServer01.Services.Application.Tcp
             if (nPort == 0 || ipaddr == null) return false;
 
             //create a listener
-            TcpListener = new TcpListener(ipaddr, nPort);
+            MTcpListenerService.CreateListener(ipaddr, nPort);
 
             //call start method for listener
-            TcpListener.Start();
+            MTcpListenerService.StartListening();
 
-            BeginAcceptTcpClient();
+            State = MTcpListenerService.BeginAcceptTcpClient(out tcpClientMessage, ByteArrLength, form1);
+
+            Message = tcpClientMessage;
 
             return true;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private void BeginAcceptTcpClient()
-        {
-            TcpListener.BeginAcceptTcpClient(iar =>
-            {
-                //cast the iar async state contains reference to original tcp object that called begin accept tcp client
-                //cast object to a listener
-                var tcpl = iar.AsyncState as TcpListener;
-
-                if (tcpl == null)
-                {
-                    Message = "there was an issue casting the TCP listener";
-
-                    State = TcpServerState.FailedToStart;
-                    return;
-                }
-
-                //must call an end against every begin
-                tcpl.EndAcceptTcpClient(iar);
-
-            }, TcpListener);
         }
     }
 }

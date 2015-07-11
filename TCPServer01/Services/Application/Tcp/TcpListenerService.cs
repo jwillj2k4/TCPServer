@@ -1,8 +1,9 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
-using TCPServer01.Enums;
 using TCPServer01.Enums.Tcp;
+using TCPServer01.Interfaces.Application.Form;
+using TCPServer01.Interfaces.Application.TCP;
 
 namespace TCPServer01.Services.Application.Tcp
 {
@@ -23,7 +24,7 @@ namespace TCPServer01.Services.Application.Tcp
             MTcpListener.Start();
         }
 
-        public TcpState BeginAcceptTcpClient(out string message, long byteArrLength, Form1 form1)
+        public TcpState BeginAcceptTcpClient(out string message, long byteArrLength, IForm form1)
         {
             var result = string.Empty;
             var state = TcpState.None;
@@ -46,7 +47,7 @@ namespace TCPServer01.Services.Application.Tcp
 
                     state = MTcpClientService.EndAcceptTcpClient(iar, out result);
                     
-                    form1.SetConsoleOutputText("Client Connected...");
+                    form1.SetOutput("Client Connected...");
                     
                     state = MTcpClientService.BeginReadStream(byteArrLength, out result, form1);
                 }

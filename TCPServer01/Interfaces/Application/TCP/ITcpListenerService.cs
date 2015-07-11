@@ -1,7 +1,8 @@
 using System.Net;
 using TCPServer01.Enums.Tcp;
+using TCPServer01.Interfaces.Application.Form;
 
-namespace TCPServer01.Services.Application.Tcp
+namespace TCPServer01.Interfaces.Application.TCP
 {
     public interface ITcpListenerService
     {
@@ -9,7 +10,7 @@ namespace TCPServer01.Services.Application.Tcp
         
         void StartListening();
 
-        TcpState BeginAcceptTcpClient(out string message, long byteArrLength, Form1 form1);
+        TcpState BeginAcceptTcpClient(out string message, long byteArrLength, IForm form1);
 
         //tcp client role
         ITcpClientService MTcpClientService { get; set; }

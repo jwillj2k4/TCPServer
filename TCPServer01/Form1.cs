@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Windows.Forms;
+using TCPServer01.Interfaces.Application.Form;
 using TCPServer01.Interfaces.Application.Tcp;
 using TCPServer01.Services.Application.Tcp;
 
 namespace TCPServer01
 {
-    public partial class Form1 : Form
+    public partial class Form1 : Form, IForm
     {
         delegate void SetTextCallback(string text);
         delegate string GetTextCallback();
-
 
         //define tcp listener 
         ITcpService _mTcpService;
@@ -19,14 +19,14 @@ namespace TCPServer01
             InitializeComponent();
         }
 
-        public void SetConsoleOutputText(string text)
+        public void SetOutput(string text)
         {
             // InvokeRequired required compares the thread ID of the
             // calling thread to the thread ID of the creating thread.
             // If these threads are different, it returns true.
             if (tbConsoleOutput.InvokeRequired)
             {
-                SetTextCallback d = SetConsoleOutputText;
+                SetTextCallback d = SetOutput;
                 Invoke(d, text);
             }
             else
@@ -35,15 +35,14 @@ namespace TCPServer01
             }
         }
 
-        
-        public string GetConsoleOutputText()
+        public string GetOutput()
         {
             // InvokeRequired required compares the thread ID of the
             // calling thread to the thread ID of the creating thread.
             // If these threads are different, it returns true.
             if (tbConsoleOutput.InvokeRequired)
             {
-                GetTextCallback d = GetConsoleOutputText;
+                GetTextCallback d = GetOutput;
                 Invoke(d);
             }
             else
@@ -58,7 +57,7 @@ namespace TCPServer01
         {
             // ITcpService _mTcpService;
 
-            _mTcpService = new TcpService(512);
+            _mTcpService = new TcpService(655568);
 
             if (!_mTcpService.CreateListener(tbIpAddress.Text, tbPort.Text, this))
             {
@@ -68,6 +67,5 @@ namespace TCPServer01
 
             MessageBox.Show(string.Format("Now listening at end point: {0}, port {1}", tbIpAddress.Text, tbPort.Text));
         }
-
     }
 }

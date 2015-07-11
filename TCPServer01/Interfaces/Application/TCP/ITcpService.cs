@@ -1,5 +1,6 @@
 ﻿using TCPServer01.Enums.Tcp;
-using TCPServer01.Services.Application.Tcp;
+using TCPServer01.Interfaces.Application.Form;
+using TCPServer01.Interfaces.Application.TCP;
 
 namespace TCPServer01.Interfaces.Application.Tcp
 {
@@ -9,6 +10,6 @@ namespace TCPServer01.Interfaces.Application.Tcp
         ITcpListenerService MTcpListenerService { get; set; }
         TcpState State { get; set; }
         long ByteArrLength { get; set; }
-        bool CreateListener(string ipAddress, string port, Form1 form1);
+        bool CreateListener(string ipAddress, string port, IForm form1);
     }
 }

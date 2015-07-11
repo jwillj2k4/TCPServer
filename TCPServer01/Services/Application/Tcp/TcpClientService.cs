@@ -2,6 +2,8 @@ using System;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
+using TCPServer01.Interfaces.Application.Form;
+using TCPServer01.Interfaces.Application.TCP;
 using TcpState = TCPServer01.Enums.Tcp.TcpState;
 
 namespace TCPServer01.Services.Application.Tcp
@@ -12,16 +14,15 @@ namespace TCPServer01.Services.Application.Tcp
 
         public byte[] Mrx { get; set; }
         public string ResultText { get; set; }
-        
+
         public TcpState EndAcceptTcpClient(IAsyncResult iar, out string message)
         {
-            MtcpClient = new TcpClient();
-
             var result = string.Empty;
             var state = TcpState.NotReady;
-
             try
             {
+                MtcpClient = new TcpClient();
+
                 //must call an end against every begin
                 var tcpl = iar.AsyncState as TcpListener;
 
@@ -34,14 +35,17 @@ namespace TCPServer01.Services.Application.Tcp
             {
                 result = ex.Message;
             }
-
-            message = result;
+            finally
+            {
+                message = result;
+            }
+         
             return state;
         }
 
-        public TcpState BeginReadStream(long byteArrLength, out string message, Form1 form1)
+        public TcpState BeginReadStream(long byteArrLength, out string message, IForm form1)
         {
-            string result;
+            var result = string.Empty;
             var state = TcpState.NotReady;
 
             try
@@ -56,12 +60,15 @@ namespace TCPServer01.Services.Application.Tcp
             {
                 result = ex.Message;
             }
-
-            message = result;
+            finally
+            {
+                message = result;
+            }
+            
             return state;
         }
 
-        private string GetTcpStream(Form1 form1)
+        private string GetTcpStream(IForm mainForm)
         {
             var result = string.Empty;
 
@@ -80,9 +87,9 @@ namespace TCPServer01.Services.Application.Tcp
                             throw new NetworkInformationException();
                     }
 
-                    form1.SetConsoleOutputText(Encoding.ASCII.GetString(Mrx, 0, countReadBytes));
+                    mainForm.SetOutput(Encoding.ASCII.GetString(Mrx, 0, countReadBytes));
 
-                    GetTcpStream(form1);
+                    GetTcpStream(mainForm);
                 }
                 catch (Exception ex)
                 {

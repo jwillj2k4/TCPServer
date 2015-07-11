@@ -1,6 +1,8 @@
 using System.Net;
 using TCPServer01.Enums.Tcp;
+using TCPServer01.Interfaces.Application.Form;
 using TCPServer01.Interfaces.Application.Tcp;
+using TCPServer01.Interfaces.Application.TCP;
 
 namespace TCPServer01.Services.Application.Tcp
 {
@@ -21,7 +23,7 @@ namespace TCPServer01.Services.Application.Tcp
             ByteArrLength = byteArrLength;
         }
 
-        public bool CreateListener(string ipAddress, string port, Form1 form1)
+        public bool CreateListener(string ipAddress, string port, IForm form1)
         {
             IPAddress ipaddr;
             int nPort;

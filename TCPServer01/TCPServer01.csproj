@@ -52,14 +52,23 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\Application\Form\IForm.cs" />
+    <Compile Include="Interfaces\Application\TCP\IMtcpMessagingService.cs" />
     <Compile Include="Interfaces\Application\TCP\ITcpService.cs" />
+    <Compile Include="Interfaces\Models\DTO\Responses\Tcp\ITcpListenerResponse.cs" />
+    <Compile Include="Interfaces\Models\DTO\Responses\Tcp\ITcpMessageResponse.cs" />
+    <Compile Include="Interfaces\Models\DTO\Responses\Tcp\ITcpResponse.cs" />
+    <Compile Include="Interfaces\Models\DTO\Responses\Tcp\TcpMessageResponse.cs" />
+    <Compile Include="Models\DTO\Responses\Tcp\TcpListenerResponse.cs" />
+    <Compile Include="Models\DTO\Responses\Tcp\TcpResponse.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Interfaces\Application\TCP\ITcpClientService.cs" />
     <Compile Include="Interfaces\Application\TCP\ITcpListenerService.cs" />
     <Compile Include="Services\Application\Tcp\TcpClientService.cs" />
     <Compile Include="Services\Application\Tcp\TcpListenerService.cs" />
+    <Compile Include="Services\Converters\Tcp\TcpListnerConverter.cs" />
     <Compile Include="Services\Application\Tcp\TcpService.cs" />
+    <Compile Include="Interfaces\Converters\ITcpListnerConverter.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -86,12 +95,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Interfaces\Converters\" />
     <Folder Include="Interfaces\Infrastructure\" />
     <Folder Include="Models\Application\" />
     <Folder Include="Models\Converters\" />
     <Folder Include="Models\Infrastructure\" />
-    <Folder Include="Services\Converters\" />
     <Folder Include="Services\Infrastructure\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

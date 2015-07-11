@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using TCPServer01.Enums.Tcp;
 using TCPServer01.Interfaces.Application.Form;
@@ -6,28 +7,76 @@ using TCPServer01.Interfaces.Application.TCP;
 
 namespace TCPServer01.Services.Application.Tcp
 {
+    ///-------------------------------------------------------------------------------------------------
+    /// <summary>   A TCP service. </summary>
+    ///
+    /// <remarks>   Justin, 7/11/2015. </remarks>
+    ///-------------------------------------------------------------------------------------------------
     public class TcpService : ITcpService
     {
+
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   tcp server role. </summary>
+        ///
+        /// <value> The m TCP listener service. </value>
+        ///-------------------------------------------------------------------------------------------------
+        private ITcpListenerService _mTcpListenerService;
+
+        /// <summary>   The TCP messaging service. </summary>
+        private readonly IMtcpMessagingService _mTcpMessagingService;
+
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   Gets or sets the message. </summary>
+        ///
+        /// <value> The message. </value>
+        ///-------------------------------------------------------------------------------------------------
         public string Message { get; private set; }
 
-        //tcp server role
-        public ITcpListenerService MTcpListenerService { get; set; }
-
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   Gets or sets the state. </summary>
+        ///
+        /// <value> The state. </value>
+        ///-------------------------------------------------------------------------------------------------
         public TcpState State { get; set; }
 
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   Gets or sets the length of the byte array. </summary>
+        ///
+        /// <value> The length of the byte array. </value>
+        ///-------------------------------------------------------------------------------------------------
         public long ByteArrLength { get; set; }
 
-        public TcpService(long byteArrLength)
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   Constructor. </summary>
+        ///
+        /// <remarks>   Justin, 7/11/2015. </remarks>
+        ///
+        /// <param name="byteArrLength">        The length of the byte array. </param>
+        /// <param name="mTcpMessagingService"> The TCP messaging service. </param>
+        ///-------------------------------------------------------------------------------------------------
+        public TcpService(long byteArrLength, IMtcpMessagingService mTcpMessagingService)
         {
-            MTcpListenerService = new TcpListenerService();
             ByteArrLength = byteArrLength;
+            _mTcpMessagingService = mTcpMessagingService;
         }
 
-        public bool CreateListener(string ipAddress, string port, IForm form1)
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   Creates a listener. </summary>
+        ///
+        /// <remarks>   Justin, 7/11/2015. </remarks>
+        ///
+        /// <param name="ipAddress">    The IP address. </param>
+        /// <param name="port">         The port. </param>
+        /// <param name="form1">        The first form. </param>
+        ///
+        /// <returns>   true if it succeeds, false if it fails. </returns>
+        ///-------------------------------------------------------------------------------------------------
+        public bool CreateTcpListenerandClient(string ipAddress, string port, IForm form1)
         {
             IPAddress ipaddr;
+
             int nPort;
-            string tcpClientMessage;
+
             Message = string.Empty;
 
             if (!int.TryParse(port, out nPort))
@@ -39,17 +88,35 @@ namespace TCPServer01.Services.Application.Tcp
             //if either of these are not set, return back
             if (nPort == 0 || ipaddr == null) return false;
 
-            //create a listener
-            MTcpListenerService.CreateListener(ipaddr, nPort);
+            //create new instance of listener service
+            _mTcpListenerService = new TcpListenerService(ipaddr, nPort);
 
-            //call start method for listener
-            MTcpListenerService.StartListening();
+            //call start listening
+            _mTcpListenerService.StartListening();
 
-            State = MTcpListenerService.BeginAcceptTcpClient(out tcpClientMessage, ByteArrLength, form1);
+            var response = _mTcpListenerService.BeginAcceptTcpClient(ByteArrLength, form1);
 
-            Message = tcpClientMessage;
+            Message = response.Result;
 
             return true;
+        }
+
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   Sends a data. </summary>
+        ///
+        /// <remarks>   Justin, 7/11/2015. </remarks>
+        ///
+        /// <param name="text"> The text. </param>
+        ///-------------------------------------------------------------------------------------------------
+        public void SendData(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                Message = "Please type some data!";
+                return;
+            }
+
+            _mTcpMessagingService.SendData(ByteArrLength, text);
         }
     }
 }

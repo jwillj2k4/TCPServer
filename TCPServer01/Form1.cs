@@ -64,7 +64,9 @@ namespace TCPServer01
             }
             else
             {
-                tbConsoleOutput.Text += text + Environment.NewLine;
+                tbConsoleOutput.Text = tbConsoleOutput.Text.Length % 20 != 0
+                    ? tbConsoleOutput.Text += text
+                    : tbConsoleOutput.Text += text + Environment.NewLine;
             }
         }
 
@@ -87,7 +89,7 @@ namespace TCPServer01
             }
             else
             {
-               return tbConsoleOutput.Text;
+                return tbConsoleOutput.Text;
             }
 
             return string.Empty;
@@ -120,7 +122,7 @@ namespace TCPServer01
 
         private void btnSend_Click(object sender, EventArgs e)
         {
-            _mTcpService.SendData(tbPayload.Text);
+            _mTcpService.SendToServer(tbPayload.Text);
         }
     }
 }

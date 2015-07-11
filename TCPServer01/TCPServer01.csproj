@@ -52,8 +52,8 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\Application\Form\IForm.cs" />
-    <Compile Include="Interfaces\Application\TCP\IMtcpMessagingService.cs" />
-    <Compile Include="Interfaces\Application\TCP\ITcpService.cs" />
+    <Compile Include="Interfaces\Application\Tcp\ITcpService.cs" />
+    <Compile Include="Interfaces\Application\Tcp\Messaging\IMtcpMessagingService.cs" />
     <Compile Include="Interfaces\Models\DTO\Responses\Tcp\ITcpListenerResponse.cs" />
     <Compile Include="Interfaces\Models\DTO\Responses\Tcp\ITcpMessageResponse.cs" />
     <Compile Include="Interfaces\Models\DTO\Responses\Tcp\ITcpResponse.cs" />
@@ -62,8 +62,10 @@
     <Compile Include="Models\DTO\Responses\Tcp\TcpResponse.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Interfaces\Application\TCP\ITcpClientService.cs" />
-    <Compile Include="Interfaces\Application\TCP\ITcpListenerService.cs" />
+    <Compile Include="Interfaces\Application\Tcp\ITcpClientService.cs" />
+    <Compile Include="Interfaces\Application\Tcp\ITcpListenerService.cs" />
+    <Compile Include="Services\Application\Tcp\Messaging\MtcpMessagingService.cs" />
+    <Compile Include="Services\Application\Tcp\Messaging\TcpMessageService.cs" />
     <Compile Include="Services\Application\Tcp\TcpClientService.cs" />
     <Compile Include="Services\Application\Tcp\TcpListenerService.cs" />
     <Compile Include="Services\Converters\Tcp\TcpListnerConverter.cs" />
@@ -95,6 +97,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Interfaces\Application\Messaging\" />
     <Folder Include="Interfaces\Infrastructure\" />
     <Folder Include="Models\Application\" />
     <Folder Include="Models\Converters\" />

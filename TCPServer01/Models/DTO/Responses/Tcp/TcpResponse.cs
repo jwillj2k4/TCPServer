@@ -30,6 +30,12 @@ namespace TCPServer01.Models.DTO.Responses.Tcp
         ///
         /// <value> The object. </value>
         ///-------------------------------------------------------------------------------------------------
-        public IAsyncResult AsyncResult { get; set; }  
+        public IAsyncResult AsyncResult { get; set; }
+
+        public TcpResponse()
+        {
+            State = TcpState.None;
+            AsyncResult = null;
+        }
     }
 }

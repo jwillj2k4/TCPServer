@@ -1,6 +1,6 @@
 ﻿using TCPServer01.Enums.Tcp;
 using TCPServer01.Interfaces.Application.Form;
-using TCPServer01.Interfaces.Application.TCP;
+using TCPServer01.Interfaces.Application.Tcp;
 
 namespace TCPServer01.Interfaces.Application.Tcp
 {
@@ -48,6 +48,6 @@ namespace TCPServer01.Interfaces.Application.Tcp
         ///
         /// <param name="text"> The text. </param>
         ///-------------------------------------------------------------------------------------------------
-        void SendData(string text);
+        void SendToServer(string text);
     }
 }

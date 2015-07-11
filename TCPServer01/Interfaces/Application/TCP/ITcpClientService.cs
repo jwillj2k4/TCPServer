@@ -3,7 +3,7 @@ using System.Net.Sockets;
 using TCPServer01.Interfaces.Application.Form;
 using TCPServer01.Interfaces.Models.DTO.Responses.Tcp;
 
-namespace TCPServer01.Interfaces.Application.TCP
+namespace TCPServer01.Interfaces.Application.Tcp
 {
     ///-------------------------------------------------------------------------------------------------
     /// <summary>   Interface for TCP client service. </summary>

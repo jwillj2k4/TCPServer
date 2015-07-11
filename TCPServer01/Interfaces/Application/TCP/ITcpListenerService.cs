@@ -2,7 +2,7 @@ using System.Net;
 using TCPServer01.Interfaces.Application.Form;
 using TCPServer01.Interfaces.Models.DTO.Responses.Tcp;
 
-namespace TCPServer01.Interfaces.Application.TCP
+namespace TCPServer01.Interfaces.Application.Tcp
 {
     ///-------------------------------------------------------------------------------------------------
     /// <summary>   Interface for TCP listener service. </summary>
@@ -28,12 +28,5 @@ namespace TCPServer01.Interfaces.Application.TCP
         /// <returns>   A TcpState. </returns>
         /// -------------------------------------------------------------------------------------------------
         ITcpResponse BeginAcceptTcpClient(long byteArrLength, IForm form1);
-
-        /// -------------------------------------------------------------------------------------------------
-        ///  <summary>   Sends a data. </summary>
-        /// <param name="byteArrLength"></param>
-        /// <param name="text"> The text. </param>
-        /// -------------------------------------------------------------------------------------------------
-        void SendData(long byteArrLength, string text);
     }
 }

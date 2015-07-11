@@ -1,12 +1,12 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
-using System.Windows.Forms;
 using TCPServer01.Enums.Tcp;
 using TCPServer01.Interfaces.Application.Form;
-using TCPServer01.Interfaces.Application.TCP;
+using TCPServer01.Interfaces.Application.Tcp;
 using TCPServer01.Interfaces.Models.DTO.Responses.Tcp;
 using TCPServer01.Models.DTO.Responses.Tcp;
+using TCPServer01.Services.Application.Tcp.Messaging;
 using TCPServer01.Services.Converters.Tcp;
 
 namespace TCPServer01.Services.Application.Tcp
@@ -19,7 +19,7 @@ namespace TCPServer01.Services.Application.Tcp
     public class TcpListenerService : ITcpListenerService
     {
         private readonly TcpListnerConverter _tcpListnerConverter = new TcpListnerConverter();
-
+        
         ///-------------------------------------------------------------------------------------------------
         /// <summary>   Gets or sets the TCP listener. </summary>
         ///
@@ -85,7 +85,7 @@ namespace TCPServer01.Services.Application.Tcp
 
                     if (response.State != TcpState.Success)
                     {
-                        ShowMessage("There was an error ", response);
+                        TcpMessageService.ShowMessage("There was an error ", response);
                         return;
                     }
 
@@ -104,49 +104,6 @@ namespace TCPServer01.Services.Application.Tcp
             }, MTcpListener);
 
             return response;
-        }
-
-        ///-------------------------------------------------------------------------------------------------
-        /// <summary>   Sends a data. </summary>
-        ///
-        /// <remarks>   Justin, 7/11/2015. </remarks>
-        ///
-        /// <param name="byteArrLength">    . </param>
-        /// <param name="text">             The text. </param>
-        ///-------------------------------------------------------------------------------------------------
-        public void SendData(long byteArrLength, string text)
-        {
-            var response = new TcpMessageResponse {State = TcpState.Failed};
-
-            try
-            {
-                if(MTcpClientService.MtcpClient!= null)
-                    if (MTcpClientService.MtcpClient.Client.Connected)
-                    {
-
-                    }
-
-            }
-            catch (Exception ex)
-            {
-                response.Result = ex.Message;
-                ShowMessage("There was an error", response);
-            }
-        }
-
-        /// -------------------------------------------------------------------------------------------------
-        ///  <summary>   Shows the error. </summary>
-        /// 
-        ///  <remarks>   Justin, 7/11/2015. </remarks>
-        /// <param name="message">  The message. </param>
-        /// <param name="response"> The response. </param>
-        /// -------------------------------------------------------------------------------------------------
-        private static void ShowMessage(string message, ITcpResponse response)
-        {
-            MessageBox.Show(string.Format("{0} result: {1}, Tcp State: {2}", message, response.Result, response.State), @"Information", MessageBoxButtons.OK,
-                              MessageBoxIcon.Information, MessageBoxDefaultButton.Button1,
-                              MessageBoxOptions.ServiceNotification);
-
         }
     }
 }

@@ -1,9 +1,9 @@
-using System;
 using System.Net;
 using TCPServer01.Enums.Tcp;
 using TCPServer01.Interfaces.Application.Form;
 using TCPServer01.Interfaces.Application.Tcp;
-using TCPServer01.Interfaces.Application.TCP;
+using TCPServer01.Interfaces.Application.Tcp.Messaging;
+using TCPServer01.Services.Application.Tcp.Messaging;
 
 namespace TCPServer01.Services.Application.Tcp
 {
@@ -21,9 +21,6 @@ namespace TCPServer01.Services.Application.Tcp
         /// <value> The m TCP listener service. </value>
         ///-------------------------------------------------------------------------------------------------
         private ITcpListenerService _mTcpListenerService;
-
-        /// <summary>   The TCP messaging service. </summary>
-        private readonly IMtcpMessagingService _mTcpMessagingService;
 
         ///-------------------------------------------------------------------------------------------------
         /// <summary>   Gets or sets the message. </summary>
@@ -46,18 +43,16 @@ namespace TCPServer01.Services.Application.Tcp
         ///-------------------------------------------------------------------------------------------------
         public long ByteArrLength { get; set; }
 
-        ///-------------------------------------------------------------------------------------------------
-        /// <summary>   Constructor. </summary>
-        ///
-        /// <remarks>   Justin, 7/11/2015. </remarks>
-        ///
-        /// <param name="byteArrLength">        The length of the byte array. </param>
-        /// <param name="mTcpMessagingService"> The TCP messaging service. </param>
-        ///-------------------------------------------------------------------------------------------------
-        public TcpService(long byteArrLength, IMtcpMessagingService mTcpMessagingService)
+        /// -------------------------------------------------------------------------------------------------
+        ///  <summary>   Constructor. </summary>
+        /// 
+        ///  <remarks>   Justin, 7/11/2015. </remarks>
+        /// 
+        ///  <param name="byteArrLength">        The length of the byte array. </param>
+        /// -------------------------------------------------------------------------------------------------
+        public TcpService(long byteArrLength)
         {
             ByteArrLength = byteArrLength;
-            _mTcpMessagingService = mTcpMessagingService;
         }
 
         ///-------------------------------------------------------------------------------------------------
@@ -108,15 +103,15 @@ namespace TCPServer01.Services.Application.Tcp
         ///
         /// <param name="text"> The text. </param>
         ///-------------------------------------------------------------------------------------------------
-        public void SendData(string text)
+        public void SendToServer(string text)
         {
             if (string.IsNullOrEmpty(text))
             {
-                Message = "Please type some data!";
                 return;
             }
 
-            _mTcpMessagingService.SendData(ByteArrLength, text);
+            //send payload to server
+            new MTcpMessagingService(_mTcpListenerService.MTcpClientService).SendToServer(ByteArrLength, text);
         }
     }
 }

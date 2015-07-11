@@ -4,7 +4,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Windows.Forms;
 using TCPServer01.Interfaces.Application.Form;
-using TCPServer01.Interfaces.Application.TCP;
+using TCPServer01.Interfaces.Application.Tcp;
 using TCPServer01.Interfaces.Models.DTO.Responses.Tcp;
 using TCPServer01.Models.DTO.Responses.Tcp;
 using TcpState = TCPServer01.Enums.Tcp.TcpState;

@@ -97,7 +97,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Interfaces\Application\Messaging\" />
     <Folder Include="Interfaces\Infrastructure\" />
     <Folder Include="Models\Application\" />
     <Folder Include="Models\Converters\" />

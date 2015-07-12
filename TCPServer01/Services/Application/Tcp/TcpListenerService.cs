@@ -75,6 +75,24 @@ namespace TCPServer01.Services.Application.Tcp
             //async operation to accept incoming requests
             ITcpResponse response = new TcpListenerResponse { Result = string.Empty, State = TcpState.NotReady };
 
+            response = AcceptTcpClient(byteArrLength, form1, response);
+
+            return response;
+        }
+
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   Accept TCP client. </summary>
+        ///
+        /// <remarks>   Justin, 7/11/2015. </remarks>
+        ///
+        /// <param name="byteArrLength">    Length of the byte array. </param>
+        /// <param name="form1">            The first form. </param>
+        /// <param name="response">         The response. </param>
+        ///
+        /// <returns>   An ITcpResponse. </returns>
+        ///-------------------------------------------------------------------------------------------------
+        private ITcpResponse AcceptTcpClient(long byteArrLength, IForm form1, ITcpResponse response)
+        {
             MTcpListener.BeginAcceptTcpClient(iar =>
             {
                 try
@@ -90,9 +108,11 @@ namespace TCPServer01.Services.Application.Tcp
                     }
 
                     MTcpClientService.EndAcceptTcpClient(response.AsyncResult);
-                    
+
                     form1.SetOutput("Client Connected...");
-                    
+
+                    AcceptTcpClient(byteArrLength, form1, response);
+
                     response = MTcpClientService.BeginReadStream(byteArrLength, form1);
                 }
                 catch (Exception ex)
@@ -100,7 +120,6 @@ namespace TCPServer01.Services.Application.Tcp
                     response.Result = ex.Message;
                     response.State = TcpState.Failed;
                 }
-
             }, MTcpListener);
 
             return response;

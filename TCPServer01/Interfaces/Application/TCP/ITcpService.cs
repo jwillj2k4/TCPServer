@@ -1,4 +1,5 @@
-﻿using TCPServer01.Enums.Tcp;
+﻿using System.Net;
+using TCPServer01.Enums.Tcp;
 using TCPServer01.Interfaces.Application.Form;
 using TCPServer01.Interfaces.Application.Tcp;
 
@@ -48,6 +49,8 @@ namespace TCPServer01.Interfaces.Application.Tcp
         ///
         /// <param name="text"> The text. </param>
         ///-------------------------------------------------------------------------------------------------
-        void SendToServer(string text);
+        void SendDataToClient(string text);
+
+        IPAddress FindMyIpv4Addrss();
     }
 }

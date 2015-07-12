@@ -35,6 +35,7 @@
             this.btnStartListening = new System.Windows.Forms.Button();
             this.btnSend = new System.Windows.Forms.Button();
             this.tbPayload = new System.Windows.Forms.TextBox();
+            this.btnFindIp = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // tbConsoleOutput
@@ -97,11 +98,22 @@
             this.tbPayload.Size = new System.Drawing.Size(129, 20);
             this.tbPayload.TabIndex = 7;
             // 
+            // btnFindIp
+            // 
+            this.btnFindIp.Location = new System.Drawing.Point(362, 448);
+            this.btnFindIp.Name = "btnFindIp";
+            this.btnFindIp.Size = new System.Drawing.Size(83, 23);
+            this.btnFindIp.TabIndex = 8;
+            this.btnFindIp.Text = "Find Ip";
+            this.btnFindIp.UseVisualStyleBackColor = true;
+            this.btnFindIp.Click += new System.EventHandler(this.btnFindIp_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 483);
+            this.Controls.Add(this.btnFindIp);
             this.Controls.Add(this.tbPayload);
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.btnStartListening);
@@ -110,7 +122,7 @@
             this.Controls.Add(this.tbIpAddress);
             this.Controls.Add(this.tbConsoleOutput);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Server";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -125,6 +137,7 @@
         private System.Windows.Forms.Button btnStartListening;
         private System.Windows.Forms.Button btnSend;
         private System.Windows.Forms.TextBox tbPayload;
+        private System.Windows.Forms.Button btnFindIp;
     }
 }
 

@@ -1,8 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using TCPServer01.Enums.Tcp;
 using TCPServer01.Interfaces.Application.Form;
 using TCPServer01.Interfaces.Application.Tcp;
-using TCPServer01.Interfaces.Application.Tcp.Messaging;
 using TCPServer01.Services.Application.Tcp.Messaging;
 
 namespace TCPServer01.Services.Application.Tcp
@@ -103,7 +106,7 @@ namespace TCPServer01.Services.Application.Tcp
         ///
         /// <param name="text"> The text. </param>
         ///-------------------------------------------------------------------------------------------------
-        public void SendToServer(string text)
+        public void SendDataToClient(string text)
         {
             if (string.IsNullOrEmpty(text))
             {
@@ -112,6 +115,40 @@ namespace TCPServer01.Services.Application.Tcp
 
             //send payload to server
             new MTcpMessagingService(_mTcpListenerService.MTcpClientService).SendToServer(ByteArrLength, text);
+        }
+
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   Searches for the IPv4 addrss of this machine. </summary>
+        ///
+        /// <remarks>   Justin, 7/11/2015. </remarks>
+        ///
+        /// <returns>   The found my IPv4 addrss. </returns>
+        ///-------------------------------------------------------------------------------------------------
+        public IPAddress FindMyIpv4Addrss()
+        {
+            //used to get the host entry info for this pc from the dns server of my network
+            IPAddress result = null;
+
+            try
+            {
+                //get local host name computer
+                var hostName = Dns.GetHostName();
+
+                var dnsEntry = Dns.GetHostEntry(hostName);
+
+                //includes ipv4 and ipv6 addresses
+                var allIps = dnsEntry.AddressList.ToList();
+
+                //get the Ipv4 address
+                result = allIps.FirstOrDefault(z => z.AddressFamily.Equals(AddressFamily.InterNetwork));
+
+            }
+            catch (Exception ex)
+            {
+                TcpMessageService.ShowMessage(string.Format("There was a problem: {0}", ex.Message));
+            }
+
+            return result;
         }
     }
 }

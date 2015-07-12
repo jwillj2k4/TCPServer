@@ -44,5 +44,24 @@ namespace TCPServer01.Services.Converters.Tcp
 
             return response;
         }
+
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   Converts the given TCP response. </summary>
+        ///
+        /// <remarks>   Justin, 7/11/2015. </remarks>
+        ///
+        /// <param name="tcpResponse">  The TCP response. </param>
+        ///
+        /// <returns>   A list of. </returns>
+        ///-------------------------------------------------------------------------------------------------
+        public ITcpListenerResponse Convert(ITcpResponse tcpResponse)
+        {
+            ITcpListenerResponse result = new TcpListenerResponse();
+            result.State = tcpResponse.State;
+            result.AsyncResult = tcpResponse.AsyncResult;
+            result.Result = tcpResponse.Result;
+            result.Listener = tcpResponse.AsyncResult.AsyncState as TcpListener;
+            return result;
+        }
     }
 }

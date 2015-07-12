@@ -33,7 +33,7 @@ namespace TCPServer01
 
         //define tcp listener 
         /// <summary>   The TCP service. </summary>
-        ITcpService _mTcpService;
+        readonly ITcpService _mTcpService;
 
         ///-------------------------------------------------------------------------------------------------
         /// <summary>   Default constructor. </summary>
@@ -43,6 +43,7 @@ namespace TCPServer01
         public Form1()
         {
             InitializeComponent();
+            _mTcpService = new TcpService(655568);
         }
 
         ///-------------------------------------------------------------------------------------------------
@@ -64,7 +65,9 @@ namespace TCPServer01
             }
             else
             {
-                tbConsoleOutput.Text = tbConsoleOutput.Text.Length % 20 != 0
+                tbConsoleOutput.Text = (tbConsoleOutput.Text.Length > 100 &&
+                                        tbConsoleOutput.Text[tbConsoleOutput.Text.Length - 1] == ' ')
+
                     ? tbConsoleOutput.Text += text
                     : tbConsoleOutput.Text += text + Environment.NewLine;
             }
@@ -105,10 +108,6 @@ namespace TCPServer01
         ///-------------------------------------------------------------------------------------------------
         private void btnStartListening_Click(object sender, EventArgs e)
         {
-            // ITcpService _mTcpService;
-
-            _mTcpService = new TcpService(655568);
-
             //pass Ip address, port number and form pointer to create a tcp listner and client (tcp server and client)
             if (!_mTcpService.CreateTcpListenerandClient(tbIpAddress.Text, tbPort.Text, this))
             {
@@ -120,9 +119,30 @@ namespace TCPServer01
             MessageBox.Show(string.Format("Now listening at end point: {0}, port {1}", tbIpAddress.Text, tbPort.Text));
         }
 
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   Event handler. Called by btnSend for click events. </summary>
+        ///
+        /// <remarks>   Justin, 7/11/2015. </remarks>
+        ///
+        /// <param name="sender">   Source of the event. </param>
+        /// <param name="e">        Event information. </param>
+        ///-------------------------------------------------------------------------------------------------
         private void btnSend_Click(object sender, EventArgs e)
         {
-            _mTcpService.SendToServer(tbPayload.Text);
+            _mTcpService.SendDataToClient(tbPayload.Text);
+        }
+
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   Event handler. Called by btnFindIp for click events. </summary>
+        ///
+        /// <remarks>   Justin, 7/11/2015. </remarks>
+        ///
+        /// <param name="sender">   Source of the event. </param>
+        /// <param name="e">        Event information. </param>
+        ///-------------------------------------------------------------------------------------------------
+        private void btnFindIp_Click(object sender, EventArgs e)
+        {
+            tbIpAddress.Text = _mTcpService.FindMyIpv4Addrss().ToString();
         }
     }
 }
